@@ -5,7 +5,7 @@ defmodule WebStream.Media.Resource do
   A media resource can be something like a video (and point to several different files of it in different resolutions);
   those specializations of the media resource should implement their own schema expanding this abstract resource.
 
-  Currently, those specializations are:
+  Currently, the specializations of this entity are:
     _none_
   """
 
@@ -84,15 +84,13 @@ defmodule WebStream.Media.Resource do
       }
   """
   def update(resource, input) do
-    params = rename_input_keys(input)
     resource
-    |> changeset(params)
+    |> changeset(input)
     |> Map.put(:action, :update)
   end
 
   @spec changeset(changeset() | t(), changeable_attributes()) :: changeset()
-  defp changeset(resource, input) do
-    params = rename_input_keys(input)
+  defp changeset(resource, params) do
     resource
     |> cast(params, [:title])
     |> validate_required([:title])
